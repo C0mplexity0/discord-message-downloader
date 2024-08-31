@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 print(Fore.RED + Style.BRIGHT + "DO NOT SHARE YOUR ACCESS TOKEN WITH ANYONE")
 print(Style.RESET_ALL + "This program will not record it anywhere, make sure you know you only ever enter your Discord token into programs you can trust.")
-print("If you don't know how to get to your token, or are uncertain about putting it here, see the GitHub page.\n")
+print("If you don't know how to get to your token, or are uncertain about putting it here, see README.md.\n")
 
 
 output_file_name = "messages.json"
