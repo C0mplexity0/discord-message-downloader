@@ -59,6 +59,7 @@ while not last_message:
     else:
         last_message = True
         print(Fore.RED + "Failed request, error " + str(response.status_code) + Style.RESET_ALL)
+        print(Fore.RED + response.content)
 
 output_file = open(output_file_name, "a", encoding="utf-8")
 output_file.write("]")
