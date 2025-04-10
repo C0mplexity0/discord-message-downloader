@@ -32,6 +32,8 @@ def getMessages(token, channel_id, before=""):
         headers={"Authorization":token}
     )
 
+print("Downloading messages, this could take a while...")
+
 while not last_message:
     requests_sent += 1
 
