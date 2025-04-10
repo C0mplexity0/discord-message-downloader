@@ -19,6 +19,7 @@ channel_id = input("Channel ID: ")
 requests_sent = 0
 last_message = False
 previous_id = ""
+first_message_outputted = False
 
 
 def getMessages(token, channel_id, before=""):
@@ -50,7 +51,11 @@ while not last_message:
         output_file = open(output_file_name, "a", encoding="utf-8")
 
         for message in response_messages:
-            output_file.write("    " + json.dumps(message) + ",\n")
+            if not first_message_outputted:
+                output_file.write("  " + json.dumps(message))
+                first_message_outputted = True
+            else:
+                output_file.write(",\n  " + json.dumps(message))
         
         output_file.close()
         
@@ -64,7 +69,7 @@ while not last_message:
         print(Fore.RED + str(response.content) + Style.RESET_ALL)
 
 output_file = open(output_file_name, "a", encoding="utf-8")
-output_file.write("]")
+output_file.write("\n]")
 output_file.close()
 
 print("Wrote all info to " + output_file_name)
