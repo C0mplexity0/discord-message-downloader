@@ -23,50 +23,50 @@ first_message_outputted = False
 
 
 def getMessages(token, channel_id, before=""):
-    query_link = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=100"
+  query_link = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=100"
 
-    if before != "":
-        query_link = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=100&before={before}"
+  if before != "":
+    query_link = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=100&before={before}"
 
-    return requests.get(
-        query_link, 
-        headers={"Authorization":token}
-    )
+  return requests.get(
+    query_link, 
+    headers={"Authorization":token}
+  )
 
 print("Downloading messages, this could take a while...")
 
 while not last_message:
-    requests_sent += 1
+  requests_sent += 1
 
-    if previous_id != "":
-        response = getMessages(token, channel_id, previous_id)
-    else:
-        response = getMessages(token, channel_id)
+  if previous_id != "":
+    response = getMessages(token, channel_id, previous_id)
+  else:
+    response = getMessages(token, channel_id)
     
-    if response.status_code == 200:
-        response_messages = json.loads(response.content)
+  if response.status_code == 200:
+    response_messages = json.loads(response.content)
 
-        print("Sent request #" + str(requests_sent))
+    print("Sent request #" + str(requests_sent))
 
-        output_file = open(output_file_name, "a", encoding="utf-8")
+    output_file = open(output_file_name, "a", encoding="utf-8")
 
-        for message in response_messages:
-            if not first_message_outputted:
-                output_file.write("  " + json.dumps(message))
-                first_message_outputted = True
-            else:
-                output_file.write(",\n  " + json.dumps(message))
-        
-        output_file.close()
-        
-        if len(response_messages) < 1:
-            last_message = True
-        else:
-            previous_id = response_messages[len(response_messages)-1]["id"]
+    for message in response_messages:
+      if not first_message_outputted:
+        output_file.write("  " + json.dumps(message))
+        first_message_outputted = True
+      else:
+        output_file.write(",\n  " + json.dumps(message))
+    
+    output_file.close()
+    
+    if len(response_messages) < 1:
+      last_message = True
     else:
-        last_message = True
-        print(Fore.RED + "Failed request, error " + str(response.status_code) + Style.RESET_ALL)
-        print(Fore.RED + str(response.content) + Style.RESET_ALL)
+      previous_id = response_messages[len(response_messages)-1]["id"]
+  else:
+    last_message = True
+    print(Fore.RED + "Failed request, error " + str(response.status_code) + Style.RESET_ALL)
+    print(Fore.RED + str(response.content) + Style.RESET_ALL)
 
 output_file = open(output_file_name, "a", encoding="utf-8")
 output_file.write("\n]")
